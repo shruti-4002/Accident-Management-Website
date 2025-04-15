@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Traffic Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #4f46e5;
+            color: white;
+            padding: 20px;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .dashboard-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Simple authentication check -->
+    <script>
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="flex items-center mb-8">
+            <i class="fas fa-traffic-light text-2xl mr-2"></i>
+            <span class="text-xl font-bold">Traffic Control</span>
+        </div>
+        
+        <nav>
+            <a href="#" class="block py-2 px-4 bg-indigo-700 rounded mb-2">Dashboard</a>
+            <a href="drivers.html" class="block py-2 px-4 hover:bg-indigo-700 rounded mb-2">Drivers</a>
+            <a href="analytics.html" class="block py-2 px-4 hover:bg-indigo-700 rounded mb-2">Analytics</a>
+            <a href="personnel.html" class="block py-2 px-4 hover:bg-indigo-700 rounded mb-2">Personnel</a>
+            <a href="settings.html" class="block py-2 px-4 hover:bg-indigo-700 rounded mb-2">Settings</a>
+        </nav>
+        
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-700">
+            <div class="flex items-center">
+                <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Profile" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                    <p class="font-medium">John Anderson</p>
+                    <p class="text-xs text-indigo-200">Traffic Controller</p>
+                </div>
+                <button onclick="logout()" class="ml-auto text-white hover:text-indigo-200">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Dashboard Overview</h1>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                <i class="fas fa-plus mr-2"></i>New Incident
+            </button>
+        </div>
+
+        <!-- Dashboard cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                        <i class="fas fa-users text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Total Incidents</h3>
+                        <p class="text-2xl font-semibold">5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Active Incidents</h3>
+                        <p class="text-2xl font-semibold">2</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Resolved Incidents</h3>
+                        <p class="text-2xl font-semibold">1</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600 mr-4">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 text-sm">Avg. Response Time</h3>
+                        <p class="text-2xl font-semibold">8.5 min</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incidents Table -->
+        <div class="dashboard-card p-6">
+            <h2 class="text-xl font-semibold mb-4">Recent Incidents</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Victim</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Location</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">John Smith</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Accident</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Main St & 5th Ave</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">Active</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">2023-06-15 08:30</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">Mary Johnson</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Traffic Jam</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Highway 101, Mile 24</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">2023-06-14 17:15</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">Robert Davis</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Road Block</td>
+                            <td class="px-6 py-4 whitespace-nowrap">Elm Street</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">Resolved</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">2023-06-13 11:45</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html> 
